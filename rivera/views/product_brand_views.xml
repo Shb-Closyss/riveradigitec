@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Brand List View -->
+    <record id="view_product_brand_tree" model="ir.ui.view">
+        <field name="name">product.brand.list</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <list string="Brands">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_count" string="Number of Products"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Brand Form View -->
+    <record id="view_product_brand_form" model="ir.ui.view">
+        <field name="name">product.brand.form</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <form string="Brand">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_products"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-th-list">
+                            <field name="product_count" widget="statinfo" string="Products"/>
+                        </button>
+                    </div>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_1920'}"/>
+                    <div class="oe_title">
+                        <label for="name" string="Brand Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Rivera, Apple, Nike..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Add brand details or notes..."/>
+                        </page>
+                        <page string="Products" name="products">
+                            <field name="product_ids" readonly="1">
+                                <list string="Products">
+                                    <field name="name"/>
+                                    <field name="default_code"/>
+                                    <field name="categ_id"/>
+                                    <field name="list_price"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Brand Search View -->
+    <record id="view_product_brand_search" model="ir.ui.view">
+        <field name="name">product.brand.search</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <search string="Search Brands">
+                <field name="name" string="Brand"/>
+                <field name="partner_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Partner / Manufacturer" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Brand Window Action -->
+    <record id="action_product_brand" model="ir.actions.act_window">
+        <field name="name">Brands</field>
+        <field name="res_model">product.brand</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_product_brand_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first product brand!
+            </p>
+            <p>
+                Manage product brands and organize your inventory by brand.
+            </p>
+        </field>
+    </record>
+
+    <!-- Inventory > Products > Brands Menu Item -->
+    <menuitem id="menu_product_brand"
+              name="Brands"
+              parent="stock.menu_stock_inventory_control"
+              action="action_product_brand"
+              sequence="3"/>
+</odoo>

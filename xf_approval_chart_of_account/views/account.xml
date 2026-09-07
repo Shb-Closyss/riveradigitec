@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_account_form_inherit" model="ir.ui.view">
+        <field name="name">view_account_form_inherit</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button string="Send for Approval" name="action_send_for_approval" type="object" class="btn-primary"
+                            invisible="approval_state in ('sent', 'approve') or not need_approval"/>
+                    <button string="Approve" name="action_approve" type="object" class="btn-sm btn-success"
+                            invisible="not is_current_approver or approval_state != 'sent'"/>
+                    <button string="Refuse" name="action_reject" type="object" class="btn-sm btn-danger"
+                            invisible="not is_current_approver or approval_state != 'sent'"/>
+                    <field name="is_current_approver" invisible="1"/>
+                    <field name="need_approval" invisible="1"/>
+                    <field name="approval_state" invisible="0" widget="statusbar" statusbar_visible="new,sent,approve"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//field[@name='active']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_list_inherit" model="ir.ui.view">
+        <field name="name">account.account.list.inherit</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="activity_ids" optional="show" widget="list_activity"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_account_view_activity" model="ir.ui.view">
+        <field name="name">account.account.activity</field>
+        <field name="model">account.account</field>
+        <field name="arch" type="xml">
+            <activity string="Accounts">
+                <field name="id"/>
+                <templates>
+                    <div t-name="activity-box">
+                        <img t-att-src="activity_image('account.account', 'avatar_128', record.id.raw_value)"
+                             role="img"
+                             t-att-title="record.name.value"
+                             t-att-alt="record.name.value"/>
+                        <div class="ms-2">
+                            <field name="name" display="full" class="o_text_block"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+    <record id="view_account_search_inherit_activity" model="ir.ui.view">
+        <field name="name">account.account.search.inherit.activity</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter invisible="1" string="My Activities" name="filter_activities_my"
+                        domain="[('activity_user_id', '=', uid)]"/>
+                <separator invisible="1"/>
+                <filter invisible="1" string="Late Activities" name="activities_overdue"
+                        domain="[('my_activity_date_deadline', '&lt;', 'today')]"
+                        help="Show all records whose next activity date is past"/>
+                <filter invisible="1" string="Today Activities" name="activities_today"
+                        domain="[('my_activity_date_deadline', '=', 'today')]"/>
+                <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                        domain="[('my_activity_date_deadline', '&gt;', 'today')]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- IMPORTANT: Add activity view to the same action -->
+    <record id="account.action_account_form" model="ir.actions.act_window">
+        <field name="view_mode">list,form,activity</field>
+    </record>
+
+</odoo>

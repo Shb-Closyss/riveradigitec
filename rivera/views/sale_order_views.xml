@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_rivera_pricelist" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.rivera.pricelist</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+
+            <!-- Brand on Sale Order Lines List -->
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <field name="brand_id" optional="show"/>
+            </xpath>
+
+            <!-- Brand on Sale Order Lines Form -->
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="after">
+                <field name="brand_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

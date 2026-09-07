@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Position the approval status badge -->
+            <xpath expr="//div[@name='button_box']" position="after">
+                <div style="float: right;">
+                    <field name="sale_approval_status" widget="badge" 
+                           decoration-info="sale_approval_status == 'sent'" 
+                           decoration-success="sale_approval_status == 'approval'" 
+                           decoration-danger="sale_approval_status == 'reject'" 
+                           invisible="sale_approval_status == 'new'"/>
+                </div>
+            </xpath>
+
+            <!-- Modify visibility of standard post buttons -->
+            <xpath expr="//button[@name='action_post'][1]" position="attributes">
+                <attribute name="invisible">state != 'draft' or move_type == 'entry' or sale_approval_status == 'sent' or (need_approval and (move_type in ('out_invoice', 'out_refund') and use_approval_route_out_invoice == 'required') or (need_approval and move_type in ('in_invoice', 'in_refund') and use_approval_route_in_invoice == 'required'))</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_post'][2]" position="attributes">
+                <attribute name="invisible">state != 'draft' or move_type != 'entry' or sale_approval_status == 'sent' or (need_approval and move_type == 'entry' and use_approval_route_entry == 'required')</attribute>
+            </xpath>
+
+            <!-- Inject approval buttons into header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_send_approval" type="object" string="Send For Approval" class="oe_highlight"
+                        invisible="state != 'draft' or approval_route_id or not need_approval"/>
+                <button name="action_approve" type="object" string="Approve" class="btn-success"
+                        invisible="not is_current_approver or sale_approval_status != 'sent' or state != 'draft'"/>
+                <button name="action_reject" type="object" string="Reject" class="btn-danger"
+                        invisible="not is_current_approver or sale_approval_status != 'sent' or state != 'draft'"/>
+            </xpath>
+
+            <!-- Load necessary fields silently in the view -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="use_approval_route_out_invoice" invisible="1"/>
+                <field name="use_approval_route_in_invoice" invisible="1"/>
+                <field name="use_approval_route_entry" invisible="1"/>
+                <field name="approval_route_id" invisible="1"/>
+                <field name="reject_button_visibility" invisible="1"/>
+                <field name="is_current_approver" invisible="1"/>
+                <field name="sale_approval_status" invisible="1"/>
+                <field name="need_approval" invisible="1"/>
+            </xpath>
+
+            <!-- Notebook Tab for Approval Routing -->
+            <xpath expr="//notebook" position="inside">
+                <page name="approval_route" string="Approval Status" invisible="not approval_route_id">
+                    <field name="approval_route_stage_ids">
+                        <list>
+                            <field name="sequence" invisible="True" widget="handle"/>
+                            <field name="name"/>
+                            <field name="user_ids" widget="many2many_avatar_user"/>
+                            <field name="state"/>
+                            <field name="decisions_summary"/>
+                        </list>
+                    </field>
+                    <field name="is_current_approver" invisible="True"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approval_route_form_inherit_accounting" model="ir.ui.view">
+        <field name="name">approval.route.form.inherit.accounting</field>
+        <field name="model">approval.route</field>
+        <field name="inherit_id" ref="xf_approval_route_base.approval_route_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='custom_domain']" position="after">
+                <field name="move_type" invisible="model != 'account.move'" required="model == 'account.move'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Template Form View Inherit -->
+    <record id="product_template_form_view_inherit_rivera_brand" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.rivera.brand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="brand_id" options="{'no_create_edit': False}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Product Template List View Inherit -->
+    <record id="product_template_tree_view_inherit_rivera_brand" model="ir.ui.view">
+        <field name="name">product.template.list.inherit.rivera.brand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="brand_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Product Template Search View Inherit -->
+    <record id="product_template_search_view_inherit_rivera_brand" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.rivera.brand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="brand_id"/>
+            </xpath>
+            <xpath expr="//filter[@name='group_by_categ_id']" position="after">
+                <filter string="Brand" name="group_by_brand" context="{'group_by': 'brand_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Product Product List View Inherit -->
+    <record id="product_product_tree_view_inherit_rivera_brand" model="ir.ui.view">
+        <field name="name">product.product.list.inherit.rivera.brand</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="brand_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

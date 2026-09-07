@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="approval_role_regional_manager" model="approval.role">
+            <field name="name">Regional Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Elena_Winters')])]"/>
+        </record>
+
+        <record id="approval_role_marketing_manager" model="approval.role">
+            <field name="name">Marketing Department Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Damion_Efland')])]"/>
+        </record>
+
+        <record id="approval_role_it_manager" model="approval.role">
+            <field name="name">IT Department Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Gary_Goetzmann')])]"/>
+        </record>
+
+        <record id="approval_role_hr_officer" model="approval.role">
+            <field name="name">HR Officer</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Lory_Weinhold')])]"/>
+        </record>
+
+        <record id="approval_role_hr_manager" model="approval.role">
+            <field name="name">HR Department Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Mira_Tennett')])]"/>
+        </record>
+
+        <record id="approval_role_rnd_manager" model="approval.role">
+            <field name="name">R&amp;D Department Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Noble_Wojno')])]"/>
+        </record>
+
+        <record id="approval_role_financial_analyst" model="approval.role">
+            <field name="name">Financial Analyst</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Larhonda_Goodale')])]"/>
+        </record>
+
+        <record id="approval_role_sales_director" model="approval.role">
+            <field name="name">Sales Director</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Gerald_Schaefer')])]"/>
+        </record>
+
+        <record id="approval_role_accountant" model="approval.role">
+            <field name="name">Accountant</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Kristina_Ayala')])]"/>
+        </record>
+
+        <record id="approval_role_fin_dir" model="approval.role">
+            <field name="name">Financial Director</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Rolf_Baus')])]"/>
+        </record>
+
+        <record id="approval_role_product_manager" model="approval.role">
+            <field name="name">Product Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Tim_Fox')])]"/>
+        </record>
+
+        <record id="approval_role_ceo" model="approval.role">
+            <field name="name">CEO</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Shila_Shavers')])]"/>
+        </record>
+
+        <record id="approval_role_supply_manager" model="approval.role">
+            <field name="name">Supply Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="user_ids" eval="[(6,0,[ref('xf_demo_data.user_Sheree_Elfstrom')])]"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem name="Approval Routes"
+                  id="approval_route_technical_root_menu"
+                  parent="base.menu_custom"
+                  sequence="50"/>
+    </data>
+</odoo>

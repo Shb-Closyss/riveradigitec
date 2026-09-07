@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="purchase_order_buildon_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref='purchase.purchase_order_form'/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_confirm'][1]" position="replace">
+                <button name="button_confirm" type="object" context="{'validate_analytic': True}"
+                        invisible="state != 'sent' or (need_approval and use_approval_route == 'required') or approval_state == 'sent'"
+                        string="Confirm Order" id="bid_confirm" data-hotkey="q" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//button[@name='button_confirm'][2]" position="replace">
+                <button name="button_confirm" type="object" string="Confirm Order" data-hotkey="q"
+                        invisible="state != 'draft' or (need_approval and use_approval_route == 'required') or approval_state == 'sent'"
+                        context="{'validate_analytic': True}" id="draft_confirm"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button string="Send for Approval" name="action_send_for_approval" type="object" class="btn-primary"
+                        invisible="approval_state in ('sent', 'approve') or not need_approval or use_approval_route == 'optional' or state == 'purchase'"/>
+                <button string="Approve" name="action_approve" type="object" class="btn-sm btn-success"
+                        invisible="not is_current_approver or approval_state != 'sent'"/>
+                <button string="Refuse" name="action_reject" type="object" class="btn-sm btn-danger"
+                        invisible="not is_current_approver or approval_state != 'sent'"/>
+                <field name="is_current_approver" invisible="1"/>
+                <field name="approval_state" invisible="1"/>
+                <field name="need_approval" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="approval_route_id" invisible="1"/>
+                <field name="approval_state" invisible="1"/>
+                <field name="is_current_approver" invisible="1"/>
+                <field name="use_approval_route" invisible="1"/>
+                <field name="need_approval" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="approval_route" string="Approval Status" invisible="not approval_route_id">
+                    <field name="approval_route_stage_ids">
+                        <list>
+                            <field name="sequence" invisible="True" widget="handle"/>
+                            <field name="name"/>
+                            <field name="user_ids" widget="many2many_avatar_user"/>
+                            <field name="state"/>
+                            <field name="decisions_summary"/>
+                        </list>
+                    </field>
+                    <field name="is_current_approver" invisible="True"/>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

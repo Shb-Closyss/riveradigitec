@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!--    <record id="res_partner_customer_approval_form_view" model="ir.actions.act_window">-->
+<!--        <field name="name">Need Approval</field>-->
+<!--        <field name="res_model">res.partner</field>-->
+<!--        <field name="view_mode">list,form</field>-->
+<!--        <field name="context">{'default_customer_rank': 1,'default_is_company':True,'active_test': False}</field>-->
+<!--        <field name="domain">[('customer_rank','>=',1),('active','=',False)]</field>-->
+<!--    </record>-->
+
+<!--    <record id="res_partner_vendor_approval_form_view" model="ir.actions.act_window">-->
+<!--        <field name="name">Need Approval</field>-->
+<!--        <field name="res_model">res.partner</field>-->
+<!--        <field name="view_mode">list,form</field>-->
+<!--        <field name="context">{'default_supplier_rank': 1,'default_is_company':True,'active_test': False}</field>-->
+<!--        <field name="domain">[('supplier_rank','>=',1),('active','=',False)]</field>-->
+<!--    </record>-->
+
+<!--    <menuitem id="customer_approval_root" name="Need Approval" action="res_partner_customer_approval_form_view" parent="inbody.customer_root"-->
+<!--              sequence="1"/>-->
+<!--    <menuitem id="vendor_approval_root" name="Need Approval" action="res_partner_vendor_approval_form_view" parent="inbody.vendor_root"-->
+<!--              sequence="1"/>-->
+
+    <record id="res_partner_inherit" model="ir.ui.view">
+        <field name="name">res.partner_inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref='base.view_partner_form'/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='warning_tax']" position="before">
+                <header>
+                    <button type="object" string="Send for approval" name="action_send_approval" class="btn-primary"
+                            invisible="active == True or sale_approval_status not in ('new', 'reject')" style="height: 400px;"/>
+                    <button name="action_approve" type="object" string="Approve" class="btn btn-success"
+                            invisible="not is_current_approver or active == True or sale_approval_status != 'sent'"/>
+                    <button name="action_reject" type="object" string="Reject" class="btn btn-danger"
+                            invisible="not is_current_approver or active == True or sale_approval_status != 'sent'"/>
+                </header>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Approver" invisible="1">
+                    <field name="approval_route_id"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+<!--    <record id="action_contact_approval_pending" model="ir.actions.act_window">-->
+<!--        <field name="name">Contact Approval</field>-->
+<!--        <field name="res_model">res.partner</field>-->
+<!--        <field name="view_mode">list,kanban,form</field>-->
+<!--        <field name="domain">[('active', '!=', True)]</field>-->
+<!--    </record>-->
+
+<!--    <menuitem id="menu_item_for_approval" name="Contact Approval" action="action_contact_approval_pending"-->
+<!--              parent="contacts.menu_contacts" sequence="2"/>-->
+
+</odoo>

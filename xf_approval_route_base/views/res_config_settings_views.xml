@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_xf_approval_route_base" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.approval.route.base</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="50"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Approval Settings" string="Approval Settings" name="approval_settings"
+                     logo="/xf_approval_route_base/static/description/user-check-solid.svg"
+                     >
+                    <block title="Roles">
+                        <setting id="xf_approval_route_base_roles_setting">
+                            <div class="content-group">
+                                <div class="row">
+                                    <div class="col-6">
+                                        Predefined Approval Role(s):
+                                    </div>
+                                    <div class="col-6">
+                                        <field name="approval_role_count"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button name="%(xf_approval_route_base.approval_role_form_act_window)d"
+                                                icon="fa-arrow-right" type="action" string="Add Approval Role"
+                                                class="btn-link"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button name="%(xf_approval_route_base.approval_role_act_window)d"
+                                                icon="fa-arrow-right" type="action" string="Manage Approval Roles"
+                                                class="btn-link"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                    <block title="Routes">
+                        <setting id="xf_approval_route_base_routes">
+                            <div class="content-group">
+                                <div class="row">
+                                    <div class="col-6">
+                                        Approval Route(s):
+                                    </div>
+                                    <div class="col-6">
+                                        <field name="approval_route_count"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button name="%(xf_approval_route_base.approval_route_form_act_window)d"
+                                                icon="fa-arrow-right" type="action" string="Add Approval Route"
+                                                class="btn-link"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button name="%(xf_approval_route_base.approval_route_act_window)d"
+                                                icon="fa-arrow-right" type="action" string="Manage Approval Routes"
+                                                class="btn-link"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_approval_route_base_configuration" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+<!--        <field name="target">self</field>-->
+        <field name="context">{'module' : 'xf_approval_route_base'}</field>
+    </record>
+
+</odoo>

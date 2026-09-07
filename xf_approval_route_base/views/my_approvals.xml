@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ══════════════════════════════════════════════
+             My Approvals — List View
+        ══════════════════════════════════════════════ -->
+        <record id="my_approvals_list_view" model="ir.ui.view">
+            <field name="name">my.approvals.list</field>
+            <field name="model">approval.route.document.stage</field>
+            <field name="arch" type="xml">
+                <list
+                    create="0"
+                    delete="0"
+                    editable="bottom"
+                    default_group_by="document_type_label"
+                    decoration-warning="state == 'pending'"
+                    decoration-success="state == 'approved'"
+                    decoration-danger="state == 'rejected'"
+                    decoration-muted="state == 'to approve'"
+                >
+                    <header>
+                        <button name="bulk_approve"
+                                type="object"
+                                string="Approve Selected"
+                                class="btn-success"/>
+                        <button name="action_purge_orphaned"
+                                type="object"
+                                string="Purge Deleted"
+                                class="btn-secondary"
+                                title="Remove approval entries whose documents have been deleted"/>
+                    </header>
+                    <field name="sequence"            column_invisible="True"/>
+                    <field name="res_model"           column_invisible="True"/>
+                    <field name="document_type_label" string="Document Type"   readonly="1"/>
+                    <field name="res_id"              string="Document"        readonly="1"/>
+                    <field name="partner_id"          string="Vendor / Customer" readonly="1" optional="show"/>
+                    <field name="total_amt"           string="Total Value"     readonly="1" optional="show"/>
+                    <field name="create_uid"          string="Requested By"    readonly="1"/>
+                    <field name="create_date"         string="Requested On"    readonly="1" optional="show"/>
+                    <field name="name"                string="Approval Stage"  readonly="1"/>
+                    <field name="user_ids"            string="Approvers"
+                                                      widget="many2many_avatar_user"
+                                                      readonly="1"/>
+                    <field name="state"
+                           widget="badge"
+                           readonly="1"
+                           decoration-warning="state == 'pending'"
+                           decoration-success="state == 'approved'"
+                           decoration-danger="state == 'rejected'"
+                           decoration-info="state == 'to approve'"/>
+                    <!-- Editable comment column -->
+                    <field name="approver_comment"
+                           string="Comment"
+                           widget="char"
+                           placeholder="Add a comment…"
+                           optional="show"/>
+                    <field name="decisions_summary"   string="Decisions"       readonly="1" optional="show"/>
+                    <!-- Inline Action Buttons -->
+                    <button name="action_approve_stage"
+                            type="object"
+                            string="Approve"
+                            class="btn-success btn-sm"
+                            invisible="state != 'pending'"
+                            title="Approve this document stage"/>
+                    <button name="action_reject_stage"
+                            type="object"
+                            string="Reject"
+                            class="btn-danger btn-sm"
+                            invisible="state != 'pending'"
+                            title="Reject this document stage"/>
+                    <!-- Open original document -->
+                    <button name="open_record"
+                            type="object"
+                            icon="fa-external-link"
+                            title="Open Document"
+                            string=""
+                            class="btn-link"/>
+                </list>
+            </field>
+        </record>
+
+
+        <!-- ══════════════════════════════════════════════
+             My Approvals — Kanban View
+        ══════════════════════════════════════════════ -->
+        <record id="my_approvals_kanban_view" model="ir.ui.view">
+            <field name="name">my.approvals.kanban</field>
+            <field name="model">approval.route.document.stage</field>
+            <field name="arch" type="xml">
+                <kanban
+                    default_group_by="document_type_label"
+                    create="0"
+                    delete="0"
+                    quick_create="0"
+                    class="o_kanban_small_column"
+                >
+                    <field name="state"/>
+                    <field name="document_type_label"/>
+                    <field name="res_model"/>
+                    <field name="res_id"/>
+                    <field name="partner_id"/>
+                    <field name="total_amt"/>
+                    <field name="user_ids"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                    <field name="name"/>
+                    <field name="decisions_summary"/>
+                    <progressbar
+                        field="state"
+                        colors='{"pending": "warning", "approved": "success", "rejected": "danger", "to approve": "200"}'/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_global_click">
+                                <!-- Header bar -->
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="fw-bold text-truncate flex-grow-1">
+                                        <field name="document_type_label"/>
+                                    </span>
+                                    <field name="state"
+                                           widget="badge"
+                                           decoration-warning="state == 'pending'"
+                                           decoration-success="state == 'approved'"
+                                           decoration-danger="state == 'rejected'"
+                                           decoration-info="state == 'to approve'"/>
+                                </div>
+                                <!-- Document reference -->
+                                <div class="mb-1">
+                                    <span class="text-muted small">Document: </span>
+                                    <span class="fw-semibold">
+                                        <field name="res_id"/>
+                                    </span>
+                                </div>
+                                <!-- Partner & Total Value -->
+                                <div class="mb-1" t-if="record.partner_id.raw_value or record.total_amt.raw_value">
+                                    <t t-if="record.partner_id.raw_value">
+                                        <span class="text-muted small">Party: </span>
+                                        <span class="fw-semibold"><field name="partner_id"/></span>
+                                    </t>
+                                    <t t-if="record.total_amt.raw_value">
+                                        <span class="ms-2 badge text-bg-light border"><field name="total_amt"/></span>
+                                    </t>
+                                </div>
+                                <!-- Stage name -->
+                                <div class="mb-1">
+                                    <span class="text-muted small">Stage: </span>
+                                    <field name="name"/>
+                                </div>
+                                <!-- Requested by + date -->
+                                <div class="d-flex align-items-center mt-2 pt-2 border-top">
+                                    <field name="create_uid"
+                                           widget="many2one_avatar_user"
+                                           readonly="1"/>
+                                    <span class="ms-auto text-muted small">
+                                        <field name="create_date" widget="date"/>
+                                    </span>
+                                </div>
+                                <!-- Approvers avatars -->
+                                <div class="mt-1">
+                                    <field name="user_ids"
+                                           widget="many2many_avatar_user"
+                                           readonly="1"/>
+                                </div>
+                                <!-- Inline Action Buttons for Kanban -->
+                                <div class="mt-2 d-flex gap-2" t-if="record.state.raw_value == 'pending'">
+                                    <button name="action_approve_stage" type="object" class="btn btn-success btn-sm flex-fill">
+                                        Approve
+                                    </button>
+                                    <button name="action_reject_stage" type="object" class="btn btn-danger btn-sm flex-fill">
+                                        Reject
+                                    </button>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════
+             My Approvals — Search View
+        ══════════════════════════════════════════════ -->
+        <record id="my_approvals_search_view" model="ir.ui.view">
+            <field name="name">my.approvals.search</field>
+            <field name="model">approval.route.document.stage</field>
+            <field name="arch" type="xml">
+                <search string="Search Approvals">
+                    <field name="document_type_label" string="Document Type"/>
+                    <field name="partner_id"          string="Vendor/Customer"/>
+                    <field name="create_uid"          string="Requested By"/>
+                    <field name="name"                string="Stage Name"/>
+                    <separator/>
+                    <!-- Status filters -->
+                    <filter name="filter_pending"
+                            string="Waiting My Approval"
+                            domain="[('state', '=', 'pending'), ('user_ids', 'in', uid)]"/>
+                    <filter name="filter_to_approve"
+                            string="To Approve"
+                            domain="[('state', '=', 'to approve'), ('user_ids', 'in', uid)]"/>
+                    <filter name="filter_approved"
+                            string="Approved"
+                            domain="[('state', '=', 'approved'), ('user_ids', 'in', uid)]"/>
+                    <filter name="filter_rejected"
+                            string="Rejected"
+                            domain="[('state', '=', 'rejected'), ('user_ids', 'in', uid)]"/>
+                    <separator/>
+                    <filter name="filter_all_my"
+                            string="All My Approvals"
+                            domain="[('user_ids', 'in', uid)]"/>
+                    <!-- Group bys -->
+                    <group>
+                        <filter name="group_by_status"
+                                string="Status"
+                                context="{'group_by': 'state'}"/>
+                        <filter name="group_by_doc_type"
+                                string="Document Type"
+                                context="{'group_by': 'document_type_label'}"/>
+                        <filter name="group_by_partner"
+                                string="Vendor / Customer"
+                                context="{'group_by': 'partner_id'}"/>
+                        <filter name="group_by_requester"
+                                string="Requested By"
+                                context="{'group_by': 'create_uid'}"/>
+                        <filter name="group_by_date"
+                                string="Requested On"
+                                context="{'group_by': 'create_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════
+             My Approvals — Window Action
+             Default: only pending stages for current user
+        ══════════════════════════════════════════════ -->
+        <record id="my_approvals_action" model="ir.actions.act_window">
+            <field name="name">My Approvals</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">approval.route.document.stage</field>
+            <field name="view_mode">list,kanban</field>
+            <field name="domain">[('user_ids', 'in', uid), ('state', '=', 'pending'), ('is_reference', '=', False)]</field>
+            <field name="context">{'search_default_filter_pending': 1, 'search_default_group_by_doc_type': 1}</field>
+            <field name="search_view_id" ref="my_approvals_search_view"/>
+            <field name="view_ids" eval="[
+                (5, 0, 0),
+                (0, 0, {'view_mode': 'list',   'view_id': ref('my_approvals_list_view')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('my_approvals_kanban_view')}),
+            ]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No approvals pending for you.
+                </p>
+                <p>
+                    When a document is sent to you for approval, it will appear here.
+                </p>
+            </field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════
+             All Approvals — Window Action (for managers)
+        ══════════════════════════════════════════════ -->
+        <record id="all_approvals_action" model="ir.actions.act_window">
+            <field name="name">All Approvals</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">approval.route.document.stage</field>
+            <field name="view_mode">list,kanban</field>
+            <field name="domain">[('is_reference', '=', False)]</field>
+            <field name="context">{'search_default_group_by_doc_type': 1}</field>
+            <field name="search_view_id" ref="my_approvals_search_view"/>
+            <field name="view_ids" eval="[
+                (5, 0, 0),
+                (0, 0, {'view_mode': 'list',   'view_id': ref('my_approvals_list_view')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('my_approvals_kanban_view')}),
+            ]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No approval records found.
+                </p>
+            </field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════
+             Root Menu — Approvals (top-level app menu)
+        ══════════════════════════════════════════════ -->
+        <menuitem
+            id="approvals_root_menu"
+            name="Approvals"
+            sequence="40"
+            web_icon="xf_approval_route_base,static/description/dynamic_approval_workflows.png"
+            groups="base.group_user"
+        />
+
+        <!-- My Approvals — visible to all internal users -->
+        <menuitem
+            id="my_approvals_menu"
+            name="My Approvals"
+            parent="approvals_root_menu"
+            action="my_approvals_action"
+            sequence="10"
+            groups="base.group_user"
+        />
+
+        <!-- All Approvals — visible only to Approval Route Managers -->
+        <menuitem
+            id="all_approvals_menu"
+            name="All Approvals"
+            parent="approvals_root_menu"
+            action="all_approvals_action"
+            sequence="20"
+            groups="xf_approval_route_base.group_approval_route_manager"
+        />
+
+        <!-- Configuration sub-menu (moved under Approvals root) -->
+        <menuitem
+            id="approvals_config_menu"
+            name="Configuration"
+            parent="approvals_root_menu"
+            sequence="90"
+            groups="xf_approval_route_base.group_approval_route_user"
+        />
+
+        <menuitem
+            id="approvals_routes_config_menu"
+            name="Approval Routes"
+            parent="approvals_config_menu"
+            action="approval_route_act_window"
+            sequence="10"
+            groups="xf_approval_route_base.group_approval_route_user"
+        />
+
+    </data>
+</odoo>

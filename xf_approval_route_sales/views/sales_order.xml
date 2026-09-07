@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!--                Confirm Button-->
+
+                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="invisible">
+                        state != 'sent' or (need_approval and use_approval_route == 'required')
+                    </attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="invisible">
+                        state != 'draft' or (need_approval and use_approval_route == 'required')
+                    </attribute>
+                </xpath>
+                <field name="currency_id" position="after">
+                    <field name="use_approval_route" invisible="1"/>
+                    <field name="approval_route_id" invisible="1"/>
+                    <field name="reject_button_visibility" invisible="1"/>
+                    <field name="approval_route_stage_ids" invisible="1"/>
+                    <field name="approval_user_ids" invisible="1"/>
+                    <field name="need_approval" invisible="1"/>
+                </field>
+                <xpath expr="//form/header" position="inside">
+                    <button name="action_send_approval" type="object" string="Send For Approval" class="btn btn-primary"
+                            invisible="approval_route_id or state != 'draft' or not need_approval"/>
+                    <button name="action_approve" type="object" string="Approve" class="btn btn-success"
+                            invisible="not is_current_approver"/>
+                    <button name="action_reject" type="object" string="Reject" class="btn btn-danger"
+                            invisible="not is_current_approver"/>
+                </xpath>
+
+                <notebook position="inside">
+                    <page name="approval_route" string="Approval Status"
+                          invisible="not approval_route_id">
+                        <field name="approval_route_stage_ids">
+                            <list>
+                                <field name="sequence" invisible="True" widget="handle"/>
+                                <field name="name"/>
+                                <field name="user_ids" widget="many2many_avatar_user"/>
+                                <field name="state"/>
+                                <field name="decisions_summary"/>
+                            </list>
+                        </field>
+                        <field name="is_current_approver" invisible="True"/>
+                    </page>
+                </notebook>
+            </field>
+
+        </record>
+
+
+<!--        <record id="approval_route_document_stage_sales_action" model="ir.actions.act_window">-->
+<!--            <field name="name">My Sales Approval</field>-->
+<!--            <field name="res_model">approval.route.document.stage</field>-->
+<!--            <field name="view_mode">list,form</field>-->
+<!--            <field name="view_ids"-->
+<!--                   eval="[(5, 0, 0),-->
+<!--                          (0, 0, {'view_mode': 'list', 'view_id': ref('xf_approval_route_base.approval_route_document_stage_list_expense')})]"/>-->
+<!--            <field name="domain">[('user_ids','in',uid),('res_model', '=', 'sale.order')]</field>-->
+<!--            <field name="context">{'create':0}</field>-->
+<!--        </record>-->
+
+<!--        <menuitem name="My Sales Approval" id="my_expense_approval_document_sales"-->
+<!--                  action="approval_route_document_stage_sales_action" groups="sales_team.group_sale_salesman"-->
+<!--                  parent="sale.sale_order_menu" sequence="50"/>-->
+
+    </data>
+</odoo>

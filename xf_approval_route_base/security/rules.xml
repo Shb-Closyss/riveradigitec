@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="approval_route_user_rule" model="ir.rule">
+            <field name="name">Approval Route User can manage own routes</field>
+            <field name="model_id" ref="model_approval_route"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('xf_approval_route_base.group_approval_route_user'))]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="approval_route_stage_user_rule" model="ir.rule">
+            <field name="name">Approval Route User can manage own routes</field>
+            <field name="model_id" ref="model_approval_route_stage"/>
+            <field name="domain_force">[('approval_route_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('xf_approval_route_base.group_approval_route_user'))]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="approval_route_manager_rule" model="ir.rule">
+            <field name="name">Approval Route Manager can manage all routes</field>
+            <field name="model_id" ref="model_approval_route"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('xf_approval_route_base.group_approval_route_manager'))]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="approval_route_stage_manager_rule" model="ir.rule">
+            <field name="name">Approval Route Manager can manage all routes</field>
+            <field name="model_id" ref="model_approval_route_stage"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('xf_approval_route_base.group_approval_route_manager'))]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+</odoo>

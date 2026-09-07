@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="document_to_approve">
+            <p>
+                You have been requested to approve the
+                <t t-esc="object._description"/>
+                "<t t-esc="object.display_name"/>".
+            </p>
+            <p>
+                <a t-att-href="'/mail/view?model=%s&amp;res_id=%s' % (object._name, object.id)">
+                    View
+                    <t t-esc="object._description"/>
+                </a>
+            </p>
+        </template>
+
+        <template id="document_approved">
+            <p>
+                The
+                <t t-esc="object._description"/>
+                "<t t-esc="object.display_name"/>" was approved.
+            </p>
+            <p>
+                <a t-att-href="'/mail/view?model=%s&amp;res_id=%s' % (object._name, object.id)">
+                    View
+                    <t t-esc="object._description"/>
+                </a>
+            </p>
+        </template>
+    </data>
+</odoo>

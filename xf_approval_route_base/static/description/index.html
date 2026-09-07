@@ -1,0 +1,466 @@
+<div class="container">
+    <!-- Title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="oe_slogan">
+                <h2 class="oe_slogan">Dynamic Approval Module for Odoo</h2>
+                <div>
+                    Empower Your Workflow with our Dynamic Approval Module for Odoo. Easily create customizable approval
+                    routes for various documents, allowing seamless collaboration among multiple approvers. Define
+                    conditions to include/exclude users, distribute responsibilities, and ensure timely approvals. Enjoy
+                    flexible and efficient document authorization across your organization with our feature-rich Odoo
+                    solution.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row cross-links">
+            <div class="col-12">
+                <h3 class="text-center">
+                    This base module is used to implement approval workflow for the following sub-modules:
+                </h3>
+                <table class="table text-center">
+                    <tr>
+                        <td>
+                            <h4>Purchase Approval</h4>
+                            <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_purchase/">
+                                <img src="submodules/dynamic_approval_workflows_purchase.png"
+                                     alt="Dynamic Approval Route for Purchases"
+                                     width="80%"/>
+                            </a>
+                        </td>
+                        <td>
+                            <h4>Sale Approval</h4>
+                            <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_sale/">
+                                <img src="submodules/dynamic_approval_workflows_sale.png"
+                                     alt="Dynamic Approval Route for Sales"
+                                     width="80%"/>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Expense Approval</h4>
+                            <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_expense/">
+                                <img src="submodules/dynamic_approval_workflows_expense.png"
+                                     alt="Dynamic Approval Route for Expenses"
+                                     width="80%"/>
+                            </a>
+                        </td>
+                        <td>
+                            <h4>Payment Approval</h4>
+                            <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_payment/">
+                                <img src="submodules/dynamic_approval_workflows_payment.png"
+                                     alt="Dynamic Approval Route for Payments"
+                                     width="80%"/>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Employee Loan Approval</h4>
+                            <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_loan/">
+                                <img src="submodules/dynamic_approval_workflows_loan.png"
+                                     alt="Dynamic Approval Route for Employee Loan"
+                                     width="80%"/>
+                            </a>
+                        </td>
+                        <td>
+                            <h4>Invoices Approval</h4>
+                            <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_invoice/">
+                                <img src="submodules/dynamic_approval_workflows_invoice.png"
+                                     alt="Dynamic Approval Route for Invoices"
+                                     width="80%"/>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Inventory Transfer Approval</h4>
+                            <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_picking/">
+                                <img src="submodules/dynamic_approval_workflows_picking.png"
+                                     alt="Dynamic Approval Route for Inventory Transfer"
+                                     width="80%"/>
+                            </a>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h4>Key Features:</h4>
+            <ul>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Predefined Approval Roles: Designate specific employees as persistent approvers for various document
+                    types, such as Purchase Orders and Sale Orders.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Approval Routes: Establish flexible rules to generate a sequential list of users who must approve a
+                    document for it to be fully approved.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Unlimited Stages with Custom Conditions: Add an unlimited number of stages to approval routes, each
+                    with multiple custom conditions based on factors like total amount, partner, country, company,
+                    products, and analytical accounts.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Approval Based on Specific Criteria: Utilize various criteria like monetary amount, partners,
+                    countries, companies, products, and analytic accounts to trigger approval stages.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Custom Python Expressions: Define custom conditions using Python code to include or exclude specific
+                    approvers, tailoring the approval workflow to your unique business needs.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Document Locking: This feature enables the automatic locking of documents once they have been sent
+                    for approval or have received approval from at least one approver. This ensures data integrity and
+                    compliance by preventing changes during the approval process.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Multi-Company Support: Seamlessly create identical roles for multiple companies using the "Multi
+                    Company" functionality.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    At least One Approver or All Approvers: Choose between two approval types, "At least one approver"
+                    or "All approvers," depending on your approval process requirements.
+                </li>
+                <li>
+                    <i class="fa fa-check-circle"></i>
+                    Collaboration and Vacation Coverage: Allow multiple users to approve a document, ensuring smooth
+                    operations even when certain users are on vacation or leave.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <p>
+                Once the module is installed, you will notice a new menu item called "Approval Settings" that will be
+                added. In this view, you will find a comprehensive summary displaying the number of predefined approval
+                roles and the total count of created approval routes.
+            </p>
+            <p>
+                <img class="oe_screenshot" src="settings.png" alt="Approval Workflow Settings" width="100%"/>
+            </p>
+            <p>
+                Additionally, the interface provides convenient quick action buttons to facilitate the process of adding
+                new approval roles or routes. This allows you to easily expand the approval functionality according to
+                your specific requirements.
+            </p>
+
+            <h2>Predefined Approval Roles</h2>
+            <p>
+                "Predefined Approval Roles" allow you to designate specific employees as persistent approvers for
+                various documents, such as Purchase Orders, Sale Orders, Expense Reports, Payments and more.
+                With this feature, you can easily set up predefined roles, ensuring that certain individuals
+                consistently handle approvals for specific document types.
+            </p>
+            <img class="oe_screenshot" src="predefined_approval_roles.png" alt="Predefined Approval Roles"
+                 width="100%"/>
+            </p>
+
+            <h2>Creating Approval Role</h2>
+            <p>To add a new role, you need to enter the role's name, select one or multiple users, and choose the
+                company for which this role is relevant.</p>
+            <p>
+                <img class="oe_screenshot" src="predefined_approval_role_form.png" alt="Predefined Approval Role Form"
+                     width="100%"/>
+            </p>
+            <p>If multiple users are specified, the document can be approved by any of them, or the system will request
+                approval from all specified users, depending on the approval cycle settings. Selecting a company will
+                allow you to create identical roles if you have multiple companies set up and you are using the "Multi
+                Company" functionality.</p>
+
+            <h2>Creating Approval Route</h2>
+            <p>
+                The creation of approval routes enables the establishment of flexible and dynamic rules to generate a
+                list of users who must sequentially approve a document for it to be considered fully approved.
+            </p>
+            <p>
+                With this module, you can add an unlimited number of stages, each with multiple custom conditions. To
+                include a user in the approval cycle, the system can evaluate factors such as the document's total
+                amount, the selected partner, company, country, or specific products and analytical accounts used.
+                Another noteworthy feature of the module is the ability to specify custom conditions using Python code
+                to add an approver to the approval cycle.
+            </p>
+        </div>
+    </div>
+    <div class="row example">
+        <div class="col-12">
+            <p>
+                Here is some example of PO approval route:
+            </p>
+            <p>
+                There are 6 stages in this approval route. But only the "Supply Manager" stage was added without any
+                custom conditions. It means that the supply manager is responsible for approving all purchase orders
+                initiated using this approval route.
+            </p>
+            <p>
+                <img class="oe_screenshot" src="po_approval_route_demo.png" alt="Purchase Order Approval Route Example"
+                     width="100%"/>
+            </p>
+            <p>For other employees to approve a purchase order, specific conditions must be met:</p>
+            <ul>
+                <li><strong>Product Manager</strong>: The Product Manager should approve the purchase order if it
+                    contains particular products in the order lines.
+                </li>
+                <li><strong>Marketing Department Manager</strong>: The Marketing Department Manager should approve the
+                    purchase order if the order lines are associated with the analytic account "Commercial & Marketing."
+                </li>
+                <li><strong>R&D Department Manager</strong>: The R&D Department Manager should approve the purchase
+                    order if the order lines are associated with the analytic account "Research & Development."
+                </li>
+                <li><strong>Accountant</strong>: The Accountant should approve purchase orders with a total amount equal
+                    to or greater than 1000 USD.
+                </li>
+                <li><strong>Financial Director</strong>: The Financial Director will be requested to approve purchase
+                    orders with a total amount equal to or greater than 100,000 USD.
+                </li>
+            </ul>
+            <p>
+                As you have noticed, the conditions are highly flexible, allowing for the coverage of various business
+                requirements for the approval system. Additionally, this is not an exhaustive list of conditions; the
+                route generation can be further customized based on various criteria as needed.
+            </p>
+            <h2>Selective Field Locking</h2>
+            <p>
+                The Selective Field Locking functionality allows users to designate specific document fields that will
+                remain locked for changes after the document has been sent for approval or has received approval from at
+                least one participant.
+            </p>
+            <p>If user tries to change document, he/she will see error message.</p>
+            <p>
+                <img class="oe_screenshot" src="access_error.png" alt="Lock Document Changes and Show Error Message"
+                     width="100%"/>
+            </p>
+            <h2>Creating Approval Workflow</h2>
+            <p>To create a new approval workflow, follow these steps:</p>
+            <ul>
+                <li>Enter a name for the workflow.</li>
+                <li>Select the data model for which this workflow will be applied.</li>
+                <li>Specify the users responsible for managing and keeping this workflow up-to-date.</li>
+                <li>Add approval stages</li>
+            </ul>
+            <h2>Adding Approval Stage</h2>
+            <p>To add a new stage you need to click "Add New Stage".</p>
+            <p>Here is how the form looks like:</p>
+            <p><img class="oe_screenshot" src="approval_stage_form_conditions.png"
+                    alt="Dynamic Approval Stage Conditions"
+                    width="100%"/></p>
+            <h4>Stage Title</h4>
+            <p>Name for approval stage</p>
+            <h4>Approval Type</h4>
+            <p>There are two options available: "At least one approver" and "All approvers."</p>
+            <ul>
+                <li>
+                    "At least one approver" implies that approval from a minimum of one person is sufficient to consider
+                    the approval stage as completed.
+                </li>
+                <li>
+                    "All approvers" requires that the document must receive approval from all approvers assigned to the
+                    approval stage for it to be considered fully approved.
+                </li>
+            </ul>
+            <h4>Approvers (Predefined)</h4>
+            <p>Here a predefined approval role can be selected.</p>
+            <h4>Approvers (Custom)</h4>
+            <p>
+                This field is to specify custom approvers for the stage. If there is no predefined role, you can select
+                any user as approver. Please do not forget to grant user access to the associated module. Also, here you
+                can select multiple users.
+            </p>
+            <p>
+                The option to select multiple users who can approve a document offers several advantages in managing the
+                approval process:
+            </p>
+            <p>
+                Vacation or Leave Coverage: If one of the designated approvers is on vacation or leave, another
+                authorized approver from the selected group can handle the approval. This ensures that the document
+                approval process remains uninterrupted even in the absence of certain users.
+            </p>
+            <p>
+                Shared Responsibility: By spreading the responsibility among multiple employees, the burden of approvals
+                can be distributed more evenly. This not only helps prevent bottlenecks but also promotes a more
+                efficient and timely approval workflow.
+            </p>
+            <p>
+                Having this feature in place adds flexibility and resilience to the approval system, contributing to
+                smoother operations and improved collaboration within the organization.
+            </p>
+            <h4>Amount</h4>
+            <p>
+                In this settings group, you can choose the field containing the monetary amount and specify the
+                condition under which an approval stage will be added to the document.
+            </p>
+            <h4>Partners</h4>
+            <p>
+                Here, you can choose the field containing partner and select partners and specify a condition for adding
+                an approval stage to the document based on whether it is associated with, or not associated with, the
+                chosen partners.
+            </p>
+            <h4>Countries</h4>
+            <p>
+                Here, you can choose the field containing country and select countries and specify a condition for
+                adding an approval stage to the document based on whether it is associated with, or not associated with,
+                the chosen countries.
+            </p>
+            <h4>Companies</h4>
+            <p>
+                Here, you can choose the field containing company and select companies and specify a condition for
+                adding an approval stage to the document based on whether it is associated with, or not associated with,
+                the chosen companies
+            </p>
+            <h4>Products</h4>
+            <p>
+                That group of settings is to choose the field containing product(s) and select products and specify a
+                condition for adding an approval stage to the document based on whether it is associated with, or not
+                associated with, the chosen products.
+            </p>
+            <h4>Analytic Accounts</h4>
+            <p>
+                That group of settings is to choose the field containing analytic account(s) and select accounts and
+                specify a condition for adding an approval stage to the document based on whether it is associated with,
+                or not associated with, the chosen accounts
+            </p>
+            <h4>Custom Condition Code</h4>
+            <p>
+                You have the option to enter a Python expression to define a custom condition for including or excluding
+                an approver from the document approval workflow. This allows for greater flexibility and customization
+                in the approval process based on specific business requirements.
+            </p>
+            <p>
+                <img class="oe_screenshot" src="approval_stage_form_python_condition.png"
+                     alt="Dynamic Approval Stage Python Conditions"
+                     width="100%"/>
+            </p>
+            <p>
+                As you've surely noticed, our module offers a multitude of capabilities to craft a truly dynamic and
+                flexible approval route for your documents. Unleash the power of seamless document approvals with our
+                feature-rich solution, tailored to optimize efficiency and collaboration. Experience the next level of
+                approval workflows today!
+            </p>
+        </div>
+    </div>
+    <div class="row disclaimer">
+        <div class="col-12">
+            <h3>Disclaimer</h3>
+            <p>
+                It is essential to note that the ability to select any data model doesn't mean the approval process will
+                be automatically implemented for those types of documents.
+            </p>
+            <p>
+                The base module contains abstract methods designed for further extending Odoo's functionality. The list
+                of sub-modules intended for use with this base module is limited but will gradually expand. In the Odoo
+                store and through the links below, you will find a list of sub-modules that enhance the built-in
+                functionality of Odoo by leveraging the capabilities of the base module.
+            </p>
+            <p>
+                If you have in-house programmers, after acquiring this module, they can apply this base module to your
+                system by implementing the specific functionality under a dedicated module. This approach allows for the
+                gradual customization and extension of the approval workflow to suit your organization's unique
+                requirements.
+            </p>
+        </div>
+    </div>
+    <div class="row cross-links">
+        <div class="col-12">
+            <h2>Sub-modules that enhance the functionality of built-in Odoo modules and implement approval feature for
+                them:</h2>
+            <ul>
+                <li>
+                    <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_purchase/">
+                        Dynamic Approval Route for Purchases
+                    </a>
+                </li>
+                <li>
+                    <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_sale/">
+                        Dynamic Approval Route for Sales
+                    </a>
+                </li>
+                <li>
+                    <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_expense/">
+                        Dynamic Approval Route for Expenses
+                    </a>
+                </li>
+                <li>
+                    <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_payment/">
+                        Dynamic Approval Route for Payments
+                    </a>
+                </li>
+                <li>
+                    <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_loan/">
+                        Dynamic Approval Route for Employee Loans
+                    </a>
+                </li>
+                <li>
+                    <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_invoice/">
+                        Dynamic Approval Route for Invoices
+                    </a>
+                </li>
+                <li>
+                    <a href="https://apps.odoo.com/apps/modules/18.0/xf_approval_route_picking/">
+                        Dynamic Approval Route for Transfers
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 oe_spaced">
+            <hr/>
+            <p>
+                Please note that to send email notifications to approvers
+                an outgoing email server should be configured.
+            </p>
+            <p>
+                If your Mail Transfer Agent (MTA) supports SRS (Sender Rewriting Scheme), your users can send and
+                receive notification.
+                However, that is more complex and requires more technical knowledge.
+            </p>
+            <p>
+                Instead, you can install additional module to
+                <a href="https://apps.odoo.com/apps/modules/18.0/xf_replace_email_params/">
+                    Replace "Email From" and "Reply To" parameters
+                </a>
+                of outgoing emails.
+            </p>
+        </div>
+    </div>
+
+    <!-- Contacts -->
+    <div class="row">
+        <div class="col-12 oe_spaced">
+            <div class="text-center">
+                <img src="https://erp.xfanis.dev/web/logo/xf_approval_route_base/18" alt="Logo" width="200">
+            </div>
+            <div class="oe_slogan text-center">
+                <div>Need a demo, discount or any other help?</div>
+                <div>
+                    Reach me on <b><span style="color: #24A1DE">T</span>ele<span style="color: #24A1DE">g</span>ram</b>:
+                    <a href="https://t.me/xfanis">https://t.me/xfanis</a>
+                </div>
+                <br/>
+                <div>Contact me for Support, Customization, Implementation:</div>
+                <div><b>Email</b>: <a href="mailto:xfanis.dev@gmail.com">xfanis.dev@gmail.com</a></div>
+                <br/>
+                <div>Stay in touch and updated:</div>
+                <div><b>Twitter</b>: <a href="https://twitter.com/XFanis_Dev">https://twitter.com/XFanis_Dev</a></div>
+            </div>
+        </div>
+    </div>
+</div>

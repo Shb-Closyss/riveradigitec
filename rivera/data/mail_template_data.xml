@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_sale_order_warehouse_notification" model="mail.template">
+            <field name="name">Sales Order: Warehouse Notification</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">{{ object.company_id.name }}: Sales Order Confirmed {{ object.name }}</field>
+            <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="use_default_to" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif; font-size: 13px; color: #333333;">
+    <p>Dear Warehouse Team,</p>
+    <p>A new Sales Order has been confirmed and is ready for fulfillment.</p>
+
+    <div style="margin: 16px 0px; padding: 12px; background-color: #f8f9fa; border-left: 4px solid #00A09D; border-radius: 4px;">
+        <p style="margin: 4px 0px;"><strong>Sales Order Number:</strong> <span t-out="object.name"/></p>
+        <p style="margin: 4px 0px;"><strong>Customer:</strong> <span t-out="object.partner_id.name"/></p>
+        <p style="margin: 4px 0px;"><strong>Order Date:</strong> <span t-out="object.date_order"/></p>
+        <p style="margin: 4px 0px;"><strong>Salesperson:</strong> <span t-out="object.user_id.name or 'N/A'"/></p>
+        <p style="margin: 4px 0px;"><strong>Warehouse:</strong> <span t-out="object.warehouse_id.name"/></p>
+    </div>
+
+    <p><strong>Ordered Products:</strong></p>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px;">
+        <thead>
+            <tr style="background-color: #f1f1f1; border-bottom: 2px solid #ddd;">
+                <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Product</th>
+                <th style="padding: 8px; text-align: right; border: 1px solid #ddd;">Quantity</th>
+                <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Unit of Measure</th>
+            </tr>
+        </thead>
+        <tbody>
+            <t t-foreach="object.order_line.filtered(lambda l: not l.display_type)" t-as="line">
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 8px; border: 1px solid #ddd;"><span t-out="line.product_id.display_name or line.name"/></td>
+                    <td style="padding: 8px; text-align: right; border: 1px solid #ddd;"><span t-out="line.product_uom_qty"/></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><span t-out="line.product_uom_id.name"/></td>
+                </tr>
+            </t>
+        </tbody>
+    </table>
+
+    <br/>
+    <p>Thank you.</p>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

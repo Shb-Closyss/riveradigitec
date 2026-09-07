@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="approval_route_list" model="ir.ui.view">
+            <field name="name">approval_route_list</field>
+            <field name="model">approval.route</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="active" invisible="True"/>
+                    <field name="name"/>
+                    <field name="model_id"/>
+                    <field name="user_id"/>
+                    <field name="company_id"/>
+                    <field name="stage_ids"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="approval_route_stage_list" model="ir.ui.view">
+            <field name="name">approval_route_stage_list</field>
+            <field name="model">approval.route.stage</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="computed_user_ids"/>
+                    <field name="approval_type"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="approval_route_stage_form" model="ir.ui.view">
+            <field name="name">approval_route_stage_form</field>
+            <field name="model">approval.route.stage</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Stage Title"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="approval_route_id" invisible="context.get('default_approval_route_id')"/>
+                                <field name="company_id" invisible="True"/>
+                                <field name="model_id" invisible="True"/>
+                                <field name="approval_type"/>
+                                <field name="approval_role_id"
+                                       invisible="approval_type not in ['one','all']"/>
+                                <field name="department_id" invisible="approval_type != 'department_head'"
+                                       required="approval_type == 'department_head'"/>
+                                <field name="custom_user_ids" widget="many2many_avatar_user"
+                                       invisible="approval_type in ['department_manager','department_requestor','responsible_user']"
+                                       domain="[('share', '=', False), ('active', '=', True)]"
+                                       required="approval_type in ['one','all','department_head']"/>
+                                <field name="condition_requestor_field_id" required="approval_type in ['department_requestor','responsible_user']" invisible="approval_type not in ['department_requestor','responsible_user']"
+                                       domain="[('ttype', 'in', ['many2one', 'many2many']), ('relation', 'in', ['hr.employee','res.users']), ('model_id', '=', model_id)]"
+                                       options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="use_custom_conditions"/>
+                            </group>
+                        </group>
+                        <notebook invisible="use_custom_conditions == False">
+                            <page string="Conditions" name="conditions">
+                                <group>
+                                    <field name="model"/>
+                                    <field name="custom_domain" widget="domain" options="{'model': 'model'}"/>
+                                </group>
+                                <group>
+                                    <group name="amount" string="Amount">
+                                        <field name="condition_amount_field_id"
+                                               domain="[('ttype', '=', 'monetary'), ('model_id', '=', model_id)]"
+                                               options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                        <field name="condition_amount_operator" string="Operator" force_save="1"
+                                               readonly="condition_amount_field_id == False"
+                                               required="condition_amount_field_id != False"/>
+                                        <field name="condition_amount" string="Amount" force_save="1"
+                                               readonly="condition_amount_field_id == False"
+                                               required="condition_amount_field_id != False"/>
+                                        <field name="condition_amount_currency_id" string="Currency" force_save="1"
+                                               readonly="condition_amount_field_id == False"
+                                               required="condition_amount_field_id != False"/>
+                                    </group>
+                                    <group name="partners" string="Partners">
+                                        <field name="condition_partner_field_id"
+                                               domain="[('ttype', 'in', ['many2one', 'many2many']), ('relation', '=', 'res.partner'), ('model_id', '=', model_id)]"
+                                               options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                        <field name="condition_partner_operator" string="Operator" force_save="1"
+                                               readonly="condition_partner_field_id == False"
+                                               required="condition_partner_field_id != False"/>
+                                        <field name="condition_partner_ids" widget="many2many_tags" force_save="1"
+                                               readonly="condition_partner_field_id == False"
+                                               required="condition_partner_field_id != False"/>
+                                    </group>
+                                    <group name="countries" string="Countries">
+                                        <field name="condition_country_field_id"
+                                               domain="[('ttype', 'in', ['many2one', 'many2many']), ('relation', '=', 'res.country'), ('model_id', '=', model_id)]"
+                                               options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                        <field name="condition_country_operator" string="Operator" force_save="1"
+                                               readonly="condition_country_field_id == False"
+                                               required="condition_country_field_id != False"/>
+                                        <field name="condition_country_ids" widget="many2many_tags" force_save="1"
+                                               readonly="condition_country_field_id == False"
+                                               required="condition_country_field_id != False"/>
+                                    </group>
+                                    <group name="companies" string="Companies">
+                                        <field name="condition_company_field_id"
+                                               domain="[('ttype', 'in', ['many2one', 'many2many']), ('relation', '=', 'res.company'), ('model_id', '=', model_id)]"
+                                               options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                        <field name="condition_company_operator" string="Operator" force_save="1"
+                                               readonly="condition_company_field_id == False"
+                                               required="condition_company_field_id != False"/>
+                                        <field name="condition_company_ids" widget="many2many_tags" force_save="1"
+                                               readonly="condition_company_field_id == False"
+                                               required="condition_company_field_id != False"/>
+                                    </group>
+                                    <group name="products" string="Products">
+                                        <field name="condition_product_field_id"
+                                               domain="[('ttype', 'in', ['many2one', 'many2many']), ('relation', '=', 'product.product'), ('model_id', '=', model_id)]"
+                                               options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                        <field name="condition_product_operator" string="Operator" force_save="1"
+                                               readonly="condition_product_field_id == False"
+                                               required="condition_product_field_id != False"/>
+                                        <field name="condition_product_ids" widget="many2many_tags" force_save="1"
+                                               readonly="condition_product_field_id == False"
+                                               required="condition_product_field_id != False"/>
+                                    </group>
+                                    <group name="analytic_accounts" string="Analytic Accounts">
+                                        <field name="condition_analytic_account_field_id"
+                                               domain="[('ttype', 'in', ['many2one', 'many2many']), ('relation', '=', 'account.analytic.account'), ('model_id', '=', model_id)]"
+                                               options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                        <field name="condition_analytic_account_operator" string="Operator"
+                                               force_save="1"
+                                               readonly="condition_analytic_account_field_id == False"
+                                               required="condition_analytic_account_field_id != False"/>
+                                        <field name="condition_analytic_account_ids" widget="many2many_tags"
+                                               force_save="1"
+                                               readonly="condition_analytic_account_field_id == False"
+                                               required="condition_analytic_account_field_id != False"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Custom Condition Code" name="code">
+                                <field name="condition_code" widget="ace" options="{'mode': 'python'}"
+                                       placeholder="Enter Python code here. Help about Python expression is available in the help tab of this document."/>
+
+                                <group>
+                                    <p colspan="2">You can enter python expression to define custom condition to
+                                        include/exclude approver to/from document approval workflow.
+                                    </p>
+                                    <p colspan="2">Returned value have to be set in the variable 'result'.</p>
+                                    <p colspan="2">
+                                        Keywords: Use the "<code>self</code>" to get document object properties,
+                                        and the "<code>user</code>" keyword for current user`s "res.users" object.
+                                        Also using the "<code>env</code>" keyword to refer to the current environment
+                                        properties.
+                                    </p>
+                                    <p colspan="2">
+                                        Examples:
+                                        <ul>
+                                            <li>
+                                                If you want to include additional approver only for vendors/customers
+                                                from
+                                                United States:
+                                                <br/>
+                                                <code>result = self.partner_id.country_id.code == 'US'</code>
+                                                <br/>
+                                                ("code" is the ISO country code in two chars)
+                                            </li>
+                                            <li>
+                                                Additional approver only for particular vendor/customer:
+                                                <br/>
+                                                <code>result = self.partner_id.name == 'Gemini Furniture'</code>
+                                            </li>
+                                            <li>
+                                                Add additional approver only for particular period (using Order Date):
+                                                <br/>
+                                                <code>result = '2021-08-09' &lt;= str(self.date_order) &lt;=
+                                                    '2021-08-15'
+                                                </code>
+                                            </li>
+                                            <li>
+                                                Add additional approver only for orders from particular company
+                                                employee:
+                                                <br/>
+                                                <code>result = user.company_id.name == 'YourCompany'</code>
+                                            </li>
+                                            <li>
+                                                Add additional approver only if approval workflow initiated by
+                                                particular employee:
+                                                <br/>
+                                                <code>result = 'Elena Winters' in env.user.name</code>
+                                            </li>
+                                            <li>
+                                                Add additional approver only for orders from particular department
+                                                member:
+                                                <br/>
+                                                <code>result = user.department_id.name == 'IT Department'</code>
+                                                <br/>
+                                                (Applicable only if HR module used)
+                                            </li>
+                                        </ul>
+                                    </p>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="approval_route_form" model="ir.ui.view">
+            <field name="name">approval_route_form</field>
+            <field name="model">approval.route</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Route Title"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="settings" string="Settings">
+                                <field name="model_id"/>
+                                <field name="company_id" domain="[('use_approval_route', '!=', 'no')]"/>
+                                <field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user"/>
+                                <field name="model" invisible="1"/>
+                                <field name="custom_domain" widget="domain" options="{'model': 'model'}"/>
+<!--                                <field name="department_ids" widget="many2many_tags"/>-->
+<!--                                <field name="move_type"/>-->
+                                <field name="active" invisible="True"/>
+                                <field name="can_edit" invisible="True"/>
+                            </group>
+                            <group name="lock_fields" string="Lock Fields"
+                                   groups="xf_approval_route_base.group_approval_route_user">
+                                <field name="lock_fields"/>
+                                <code colspan="2" invisible="lock_fields != True">
+                                    Here you need to specify document fields that need to be locked for editing
+                                    after being sent for approval or
+                                    after receiving approval from at least one participant.
+                                </code>
+                                <field name="locked_fields" widget="many2many_tags"
+                                       options="{'no_quick_create': True, 'no_create_edit': True, 'no_create': True, 'no_open': True}"
+                                       invisible="lock_fields != True"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="stages" string="Stages">
+                                <field name="stage_ids" readonly="1" nolabel="1"
+                                       context="{'default_approval_route_id':id}">
+                                    <list create="0">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="approval_type"/>
+                                        <field name="computed_user_ids" widget="many2many_avatar_user"/>
+                                        <field name="condition_summary"/>
+                                        <field name="can_edit" invisible="True"/>
+                                        <button name="edit_stage" type="object" icon="fa-pencil" string="Edit Stage"
+                                                invisible="can_edit == False"/>
+                                        <button name="unlink" type="object" icon="fa-trash" string="Delete"
+                                                confirm="Please confirm removing the stage"
+                                                invisible="can_edit == False"/>
+                                    </list>
+                                </field>
+                                <button name="add_stage" type="object" icon="fa-plus" string="Add New Stage"
+                                        invisible="can_edit == False"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="approval_route_form_act_window" model="ir.actions.act_window">
+            <field name="name">Add Approval Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">approval.route</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record id="approval_route_act_window" model="ir.actions.act_window">
+            <field name="name">Approval Routes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">approval.route</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{}</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No route found. Let's create one!
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Approval Routes"
+                  id="approval_route_technical_menu"
+                  action="approval_route_act_window"
+                  parent="approval_route_technical_root_menu"
+                  sequence="10"/>
+
+    </data>
+</odoo>
