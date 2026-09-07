@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="brand_id" options="{'no_create_edit': False}"/>
+                <field name="rja_code"/>
             </xpath>
         </field>
     </record>
@@ -20,6 +21,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="brand_id" optional="show"/>
+                <field name="rja_code" optional="show"/>
             </xpath>
         </field>
     </record>
@@ -32,6 +34,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="brand_id"/>
+                <field name="rja_code"/>
             </xpath>
             <xpath expr="//filter[@name='group_by_categ_id']" position="after">
                 <filter string="Brand" name="group_by_brand" context="{'group_by': 'brand_id'}"/>
@@ -47,6 +50,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="brand_id" optional="show"/>
+                <field name="rja_code" optional="show"/>
             </xpath>
         </field>
     </record>

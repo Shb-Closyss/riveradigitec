@@ -10,6 +10,10 @@ class ProductTemplate(models.Model):
         string='Brand',
         index=True,
     )
+    rja_code = fields.Char(
+        string='RJA Code',
+        index=True,
+    )
 
 
 class ProductProduct(models.Model):
@@ -18,6 +22,12 @@ class ProductProduct(models.Model):
     brand_id = fields.Many2one(
         related='product_tmpl_id.brand_id',
         string='Brand',
+        store=True,
+        readonly=False,
+    )
+    rja_code = fields.Char(
+        related='product_tmpl_id.rja_code',
+        string='RJA Code',
         store=True,
         readonly=False,
     )

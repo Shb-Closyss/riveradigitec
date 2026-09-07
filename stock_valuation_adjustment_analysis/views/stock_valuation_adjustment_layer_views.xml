@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_valuation_adjustment_layer_list" model="ir.ui.view">
+        <field name="name">stock.valuation.adjustment.layer.list</field>
+        <field name="model">stock.valuation.adjustment.layer</field>
+        <field name="arch" type="xml">
+            <list string="Valuation Adjustment Analysis" create="0" edit="0" delete="0" export_xlsx="1">
+                <field name="cost_id"/>
+                <field name="picking_id" optional="hide"/>
+                <field name="cost_line_id"/>
+                <field name="product_id"/>
+                <field name="quantity" sum="Total Quantity"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="former_cost" sum="Total Original Value"/>
+                <field name="final_cost" sum="Total New Value"/>
+                <field name="additional_landed_cost" sum="Total Additional Landed Cost"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_stock_valuation_adjustment_layer_search" model="ir.ui.view">
+        <field name="name">stock.valuation.adjustment.layer.search</field>
+        <field name="model">stock.valuation.adjustment.layer</field>
+        <field name="arch" type="xml">
+            <search string="Valuation Adjustment Analysis">
+                <field name="date"/>
+                <field name="cost_id"/>
+                <field name="picking_id"/>
+                <field name="product_id"/>
+                <field name="cost_line_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+
+                <filter string="Date" name="filter_date" date="date"/>
+
+                <separator/>
+
+                <group>
+                    <filter string="Landed Cost" name="group_by_cost" context="{'group_by': 'cost_id'}"/>
+                    <filter string="Transfer" name="group_by_picking" context="{'group_by': 'picking_id'}"/>
+                    <filter string="Product" name="group_by_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Cost Line" name="group_by_cost_line" context="{'group_by': 'cost_line_id'}"/>
+                    <filter string="Month" name="group_by_month" context="{'group_by': 'date'}"/>
+                    <filter string="Company" name="group_by_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_stock_valuation_adjustment_analysis" model="ir.actions.act_window">
+        <field name="name">Valuation Adjustment Analysis</field>
+        <field name="res_model">stock.valuation.adjustment.layer</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_stock_valuation_adjustment_layer_search"/>
+        <field name="context">{'search_default_group_by_picking': 1, 'search_default_group_by_product': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No valuation adjustments found
+            </p><p>
+                This report displays all stock valuation adjustments across landed costs.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_valuation_adjustment_analysis"
+              name="Valuation Adjustment Analysis"
+              parent="stock.menu_warehouse_report"
+              action="action_stock_valuation_adjustment_analysis"
+              sequence="150"/>
+</odoo>
