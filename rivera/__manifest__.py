@@ -34,7 +34,9 @@ business processes, workflows, reports, and enhancements.
 
     'data': [
         'security/ir.model.access.csv',
+        'report/daily_dispatch_report.xml',
         'data/mail_template_data.xml',
+        'data/ir_cron_data.xml',
         'views/product_brand_views.xml',
         'views/product_template_views.xml',
         'views/sale_order_views.xml',
@@ -42,6 +44,7 @@ business processes, workflows, reports, and enhancements.
         'views/account_move_views.xml',
         'views/stock_picking_views.xml',
         'views/stock_warehouse_views.xml',
+        'views/res_config_settings_views.xml',
     ],
 
     'assets': {},

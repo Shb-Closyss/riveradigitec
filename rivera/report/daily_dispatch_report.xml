@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Daily Dispatch QWeb PDF Report Action -->
+    <record id="action_report_daily_dispatch" model="ir.actions.report">
+        <field name="name">Daily Dispatch Report</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">rivera.report_daily_dispatch</field>
+        <field name="report_file">rivera.report_daily_dispatch</field>
+        <field name="print_report_name">'Daily_Dispatch_Report'</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Daily Dispatch QWeb Report Template -->
+    <template id="report_daily_dispatch">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="font-family: Arial, sans-serif; font-size: 12px; color: #333333;">
+                    <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #00A09D; padding-bottom: 10px;">
+                        <h2 style="margin: 0; color: #1a252f; font-weight: bold;">Daily Dispatch Report</h2>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 11px;">
+                            Generated on: <span t-out="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/>
+                        </p>
+                    </div>
+
+                    <t t-foreach="docs" t-as="picking">
+                        <div style="border: 1px solid #dcdcdc; border-radius: 4px; margin-bottom: 22px; page-break-inside: avoid; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            <!-- Delivery Order Header Details -->
+                            <table style="width: 100%; border-collapse: collapse; background-color: #f8f9fa; font-size: 11px;">
+                                <tr>
+                                    <td style="padding: 6px 12px; width: 25%;"><strong>DO Number:</strong> <span t-out="picking.name"/></td>
+                                    <td style="padding: 6px 12px; width: 25%;"><strong>Dispatch Date:</strong> <span t-out="picking.date_done" t-options="{'widget': 'date'}"/></td>
+                                    <td style="padding: 6px 12px; width: 25%;"><strong>Customer:</strong> <span t-out="picking.partner_id.name"/></td>
+                                    <td style="padding: 6px 12px; width: 25%;"><strong>Sales Order:</strong> <span t-out="picking.sale_id.name or picking.origin or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 6px 12px;"><strong>Invoice No.:</strong> <span t-out="picking.invoice_id.name or '-'"/></td>
+                                    <td style="padding: 6px 12px;"><strong>Salesperson:</strong> <span t-out="picking.salesperson_id.name or '-'"/></td>
+                                    <td style="padding: 6px 12px;"><strong>Courier Partner:</strong> <span t-out="picking.courier_partner_id.name or '-'"/></td>
+                                    <td style="padding: 6px 12px;"><strong>Docket No.:</strong> <span t-out="picking.docket_no or '-'"/></td>
+                                </tr>
+                            </table>
+
+                            <!-- Dispatched Products Table -->
+                            <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                                <thead>
+                                    <tr style="background-color: #eef2f5; border-top: 1px solid #dcdcdc; border-bottom: 1px solid #dcdcdc;">
+                                        <th style="padding: 6px 12px; text-align: left; width: 65%;">Product</th>
+                                        <th style="padding: 6px 12px; text-align: right; width: 20%;">Quantity Done</th>
+                                        <th style="padding: 6px 12px; text-align: left; width: 15%;">UoM</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="moves" t-value="picking.move_ids.filtered(lambda m: m.state == 'done') or picking.move_ids"/>
+                                    <t t-foreach="moves" t-as="move">
+                                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                                            <td style="padding: 5px 12px;"><span t-out="move.product_id.display_name"/></td>
+                                            <td style="padding: 5px 12px; text-align: right;"><span t-out="move.quantity or move.product_uom_qty"/></td>
+                                            <td style="padding: 5px 12px;"><span t-out="move.product_uom.name"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -6,8 +6,36 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_dispatch_email" string="Send Dispatch Email" type="object"
+                        invisible="state != 'done' or picking_type_code != 'outgoing'"
+                        class="btn-secondary"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="salesperson_id" widget="many2one_avatar_user" invisible="picking_type_code != 'outgoing'"/>
+                <field name="courier_partner_id" invisible="picking_type_code != 'outgoing'"/>
+                <field name="docket_no" invisible="picking_type_code != 'outgoing'"/>
+                <field name="invoice_id" domain="[('move_type', '=', 'out_invoice'), ('state', '=', 'posted'), ('partner_id', '=?', partner_id)]" invisible="picking_type_code != 'outgoing'"/>
+                <field name="dispatch_email_sent" invisible="1"/>
+            </xpath>
             <xpath expr="//field[@name='move_ids']/list/field[@name='product_id']" position="after">
                 <field name="brand_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Stock Picking List View Inherit for Dispatch Details -->
+    <record id="vpicktree_inherit_rivera_dispatch" model="ir.ui.view">
+        <field name="name">stock.picking.tree.inherit.rivera.dispatch</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="salesperson_id" optional="show" widget="many2one_avatar_user"/>
+                <field name="courier_partner_id" optional="show"/>
+                <field name="docket_no" optional="show"/>
+                <field name="invoice_id" optional="show"/>
+                <field name="dispatch_email_sent" optional="hide"/>
             </xpath>
         </field>
     </record>

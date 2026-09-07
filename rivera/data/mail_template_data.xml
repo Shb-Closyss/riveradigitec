@@ -46,5 +46,125 @@
 </div>
             </field>
         </record>
+        <!-- Management Daily Dispatch Report Email Template -->
+        <record id="mail_template_daily_dispatch_management" model="mail.template">
+            <field name="name">Daily Dispatch Report: Management Notification</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="subject">{{ (ctx.get('company_name') or object.company_id.name) }}: Daily Dispatch Report - {{ ctx.get('dispatch_date') or '' }}</field>
+            <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="use_default_to" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif; font-size: 13px; color: #333333;">
+    <p>Dear Management,</p>
+    <p>Please find below the daily dispatch summary for <strong><span t-out="ctx.get('dispatch_date')"/></strong>.</p>
+
+    <t t-set="pickings_list" t-value="ctx.get('pickings') or [object]"/>
+    <t t-foreach="pickings_list" t-as="p">
+        <div style="margin: 14px 0px; padding: 12px; background-color: #f8f9fa; border-left: 4px solid #00A09D; border-radius: 4px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr>
+                    <td style="padding: 3px 0; width: 50%;"><strong>DO Number:</strong> <span t-out="p.name"/></td>
+                    <td style="padding: 3px 0; width: 50%;"><strong>Customer:</strong> <span t-out="p.partner_id.name"/></td>
+                </tr>
+                <tr>
+                    <td style="padding: 3px 0;"><strong>Sales Order:</strong> <span t-out="p.sale_id.name or p.origin or '-'"/></td>
+                    <td style="padding: 3px 0;"><strong>Invoice No.:</strong> <span t-out="p.invoice_id.name or '-'"/></td>
+                </tr>
+                <tr>
+                    <td style="padding: 3px 0;"><strong>Salesperson:</strong> <span t-out="p.salesperson_id.name or '-'"/></td>
+                    <td style="padding: 3px 0;"><strong>Courier Partner:</strong> <span t-out="p.courier_partner_id.name or '-'"/></td>
+                </tr>
+                <tr>
+                    <td style="padding: 3px 0;" colspan="2"><strong>Docket No.:</strong> <span t-out="p.docket_no or '-'"/></td>
+                </tr>
+            </table>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px;">
+                <thead>
+                    <tr style="background-color: #e9ecef;">
+                        <th style="padding: 5px 8px; text-align: left; border: 1px solid #ddd;">Product</th>
+                        <th style="padding: 5px 8px; text-align: right; border: 1px solid #ddd; width: 100px;">Quantity</th>
+                        <th style="padding: 5px 8px; text-align: left; border: 1px solid #ddd; width: 80px;">UoM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="moves" t-value="p.move_ids.filtered(lambda m: m.state == 'done') or p.move_ids"/>
+                    <t t-foreach="moves" t-as="m">
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 4px 8px; border: 1px solid #ddd;"><span t-out="m.product_id.display_name"/></td>
+                            <td style="padding: 4px 8px; text-align: right; border: 1px solid #ddd;"><span t-out="m.quantity or m.product_uom_qty"/></td>
+                            <td style="padding: 4px 8px; border: 1px solid #ddd;"><span t-out="m.product_uom.name"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+
+    <p style="margin-top: 15px; color: #666; font-size: 12px;">The detailed PDF report is also attached to this email.</p>
+    <p>Thank you,<br/><span t-out="ctx.get('company_name') or object.company_id.name"/></p>
+</div>
+            </field>
+        </record>
+
+        <!-- Salesperson Daily Dispatch Update Email Template -->
+        <record id="mail_template_daily_dispatch_salesperson" model="mail.template">
+            <field name="name">Daily Dispatch: Salesperson Notification</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="subject">{{ (ctx.get('company_name') or object.company_id.name) }}: Dispatch Update for Your Orders - {{ ctx.get('dispatch_date') or '' }}</field>
+            <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="use_default_to" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif; font-size: 13px; color: #333333;">
+    <p>Hello <span t-out="ctx.get('salesperson').name if ctx.get('salesperson') else (object.salesperson_id.name or 'Team')"/>,</p>
+    <p>The following delivery order(s) for your sales orders have been dispatched on <strong><span t-out="ctx.get('dispatch_date')"/></strong>:</p>
+
+    <t t-set="sp_pickings" t-value="ctx.get('pickings') or [object]"/>
+    <t t-foreach="sp_pickings" t-as="p">
+        <div style="margin: 14px 0px; padding: 12px; background-color: #f8f9fa; border-left: 4px solid #00A09D; border-radius: 4px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr>
+                    <td style="padding: 3px 0; width: 50%;"><strong>DO Number:</strong> <span t-out="p.name"/></td>
+                    <td style="padding: 3px 0; width: 50%;"><strong>Customer:</strong> <span t-out="p.partner_id.name"/></td>
+                </tr>
+                <tr>
+                    <td style="padding: 3px 0;"><strong>Sales Order:</strong> <span t-out="p.sale_id.name or p.origin or '-'"/></td>
+                    <td style="padding: 3px 0;"><strong>Invoice No.:</strong> <span t-out="p.invoice_id.name or '-'"/></td>
+                </tr>
+                <tr>
+                    <td style="padding: 3px 0;"><strong>Courier Partner:</strong> <span t-out="p.courier_partner_id.name or '-'"/></td>
+                    <td style="padding: 3px 0;"><strong>Docket No.:</strong> <span t-out="p.docket_no or '-'"/></td>
+                </tr>
+            </table>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px;">
+                <thead>
+                    <tr style="background-color: #e9ecef;">
+                        <th style="padding: 5px 8px; text-align: left; border: 1px solid #ddd;">Product</th>
+                        <th style="padding: 5px 8px; text-align: right; border: 1px solid #ddd; width: 100px;">Quantity</th>
+                        <th style="padding: 5px 8px; text-align: left; border: 1px solid #ddd; width: 80px;">UoM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="moves" t-value="p.move_ids.filtered(lambda m: m.state == 'done') or p.move_ids"/>
+                    <t t-foreach="moves" t-as="m">
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 4px 8px; border: 1px solid #ddd;"><span t-out="m.product_id.display_name"/></td>
+                            <td style="padding: 4px 8px; text-align: right; border: 1px solid #ddd;"><span t-out="m.quantity or m.product_uom_qty"/></td>
+                            <td style="padding: 4px 8px; border: 1px solid #ddd;"><span t-out="m.product_uom.name"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+
+    <p style="margin-top: 15px; color: #666; font-size: 12px;">Please find the dispatch report PDF attached.</p>
+    <p>Thank you,<br/><span t-out="ctx.get('company_name') or object.company_id.name"/></p>
+</div>
+            </field>
+        </record>
     </data>
 </odoo>

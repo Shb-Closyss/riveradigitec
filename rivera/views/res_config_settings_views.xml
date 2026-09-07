@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inventory Settings Inherit for Dispatch Management -->
+    <record id="res_config_settings_view_form_inherit_rivera_dispatch" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.rivera.dispatch</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='stock']" position="inside">
+                <block title="Daily Dispatch Management" id="rivera_dispatch_management">
+                    <setting id="dispatch_management_email_setting" help="Comma-separated email addresses of management who will receive the daily dispatch report.">
+                        <field name="dispatch_management_email" placeholder="e.g. management@riveradigitec.com, ops@riveradigitec.com"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
