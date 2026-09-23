@@ -49,6 +49,24 @@ class StockPicking(models.Model):
         for picking in self:
             picking.salesperson_id = picking.sale_id.user_id if picking.sale_id else False
 
+    def _action_done(self):
+        res = super()._action_done()
+        for picking in self.filtered(lambda p: p.picking_type_code == 'incoming'):
+            receipt_date = (
+                fields.Date.context_today(picking, picking.date_done)
+                if picking.date_done
+                else fields.Date.context_today(picking)
+            )
+            for move in picking.move_ids:
+                for line in move.move_line_ids:
+                    if line.lot_id:
+                        vals = {'import_date': receipt_date}
+                        mfg_date = line.manufacturing_date or move.manufacturing_date
+                        if mfg_date:
+                            vals['manufacturing_date'] = mfg_date
+                        line.lot_id.write(vals)
+        return res
+
     def action_send_dispatch_email(self):
         """Manually send dispatch emails for selected delivery orders."""
         for picking in self:

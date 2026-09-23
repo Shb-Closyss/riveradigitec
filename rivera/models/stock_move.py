@@ -13,6 +13,11 @@ class StockMove(models.Model):
         readonly=False,
         precompute=True,
     )
+    manufacturing_date = fields.Date(
+        string='Manufacturing Date',
+        copy=False,
+        help='Manufacturing Date of the lot/serial number to be received.',
+    )
 
     @api.depends('sale_line_id.brand_id', 'purchase_line_id.brand_id', 'product_id.brand_id')
     def _compute_brand_id(self):
@@ -25,6 +30,20 @@ class StockMove(models.Model):
                 move.brand_id = move.product_id.brand_id
             else:
                 move.brand_id = False
+
+    def _action_done(self, cancel_backorder=False):
+        res = super()._action_done(cancel_backorder=cancel_backorder)
+        for move in res:
+            if move.picking_code == 'incoming' and not move.picking_id:
+                receipt_date = fields.Date.context_today(move)
+                for line in move.move_line_ids:
+                    if line.lot_id:
+                        vals = {'import_date': receipt_date}
+                        mfg_date = line.manufacturing_date or move.manufacturing_date
+                        if mfg_date:
+                            vals['manufacturing_date'] = mfg_date
+                        line.lot_id.write(vals)
+        return res
 
 
 class StockRule(models.Model):

@@ -5,3 +5,5 @@ class StockLotInherit(models.Model):
 
     under_warrenty = fields.Boolean("Under Warrenty")
     warrenty_expiry_date = fields.Date("Warrenty Expiry Date")
+    manufacturing_date = fields.Date(string="Manufacturing Date")
+    import_date = fields.Date(string="Import Date (GRN)", readonly=True)
