@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Reported Issue List View -->
+    <record id="helpdesk_reported_issue_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.reported.issue.list</field>
+        <field name="model">helpdesk.reported.issue</field>
+        <field name="arch" type="xml">
+            <list string="Reported Issues" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Issue Name"/>
+                <field name="description"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Reported Issue Form View -->
+    <record id="helpdesk_reported_issue_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.reported.issue.form</field>
+        <field name="model">helpdesk.reported.issue</field>
+        <field name="arch" type="xml">
+            <form string="Reported Issue">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="e.g. Broken Display, Battery Drain..."/>
+                            <field name="sequence" groups="base.group_no_one"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1" placeholder="Details or guidance for this reported issue..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Reported Issue Search View -->
+    <record id="helpdesk_reported_issue_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.reported.issue.search</field>
+        <field name="model">helpdesk.reported.issue</field>
+        <field name="arch" type="xml">
+            <search string="Reported Issues">
+                <field name="name" string="Issue Name"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for Reported Issue Master -->
+    <record id="action_helpdesk_reported_issue" model="ir.actions.act_window">
+        <field name="name">Reported Issues</field>
+        <field name="res_model">helpdesk.reported.issue</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="helpdesk_reported_issue_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Reported Issue
+            </p>
+            <p>
+                Define common issues reported by customers on Helpdesk tickets.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menuitem under Helpdesk Configuration -->
+    <menuitem id="helpdesk_menu_reported_issue"
+              name="Reported Issues"
+              parent="helpdesk.helpdesk_menu_config"
+              action="action_helpdesk_reported_issue"
+              sequence="25"/>
+</odoo>

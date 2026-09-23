@@ -12,4 +12,5 @@ from . import stock_picking
 from . import stock_warehouse
 from . import res_config_settings
 from . import stock_lot
+from . import helpdesk_reported_issue
 from . import helpdesk_ticket

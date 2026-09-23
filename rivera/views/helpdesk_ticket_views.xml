@@ -13,6 +13,7 @@
                 <field name="import_date" readonly="1" force_save="1" invisible="not product_id and not lot_id" groups="stock.group_stock_user"/>
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="reported_issue_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Select reported issues..."/>
                 <field name="under_warrenty" readonly="1" force_save="1" invisible="not product_id and not lot_id" groups="stock.group_stock_user"/>
                 <field name="warrenty_expiry_date" readonly="1" force_save="1" invisible="not under_warrenty or (not product_id and not lot_id)" groups="stock.group_stock_user"/>
             </xpath>
@@ -28,6 +29,7 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="product_id" optional="show" groups="stock.group_stock_user"/>
                 <field name="lot_id" optional="show" groups="stock.group_stock_user"/>
+                <field name="reported_issue_ids" widget="many2many_tags" optional="show"/>
                 <field name="manufacturing_date" optional="hide" groups="stock.group_stock_user"/>
                 <field name="import_date" optional="hide" groups="stock.group_stock_user"/>
                 <field name="under_warrenty" optional="hide" groups="stock.group_stock_user"/>

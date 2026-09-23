@@ -47,6 +47,14 @@ class HelpdeskTicket(models.Model):
         store=True,
         groups='stock.group_stock_user',
     )
+    reported_issue_ids = fields.Many2many(
+        comodel_name='helpdesk.reported.issue',
+        relation='helpdesk_ticket_reported_issue_rel',
+        column1='ticket_id',
+        column2='issue_id',
+        string='Reported Issue',
+        tracking=True,
+    )
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
