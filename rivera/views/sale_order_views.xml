@@ -18,6 +18,12 @@
             <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="after">
                 <field name="brand_id"/>
             </xpath>
+
+            <!-- Order ID and Online Invoice No. -->
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="order_id" readonly="state in ['cancel', 'sale']"/>
+                <field name="online_invoice_no" readonly="state in ['cancel', 'sale']"/>
+            </xpath>
         </field>
     </record>
 </odoo>

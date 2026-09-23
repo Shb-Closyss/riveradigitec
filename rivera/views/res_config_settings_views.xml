@@ -16,4 +16,18 @@
             </xpath>
         </field>
     </record>
+    <!-- Invoicing Settings Inherit for Overwrite Invoice Number -->
+    <record id="res_config_settings_view_form_inherit_rivera_account" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.rivera.account</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='invoicing_settings']" position="inside">
+                <setting id="overwrite_invoice_number_setting" string="Overwrite Invoice Number" help="Replace the Odoo-generated invoice number with the Online Invoice No. when posting customer invoices.">
+                    <field name="overwrite_invoice_number"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
 </odoo>

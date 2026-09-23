@@ -19,6 +19,12 @@
             <xpath expr="//field[@name='line_ids']/list/field[@name='account_id']" position="after">
                 <field name="brand_id" optional="hide"/>
             </xpath>
+
+            <!-- Order ID and Online Invoice No. on Customer Invoices -->
+            <xpath expr="//group[@id='header_right_group']" position="inside">
+                <field name="order_id" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')" readonly="state != 'draft'"/>
+                <field name="online_invoice_no" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')" readonly="state != 'draft'"/>
+            </xpath>
         </field>
     </record>
 </odoo>

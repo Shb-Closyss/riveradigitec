@@ -10,3 +10,9 @@ class ResConfigSettings(models.TransientModel):
         config_parameter='rivera.dispatch_management_email',
         help='Comma-separated email addresses of management to receive the daily dispatch report.',
     )
+    overwrite_invoice_number = fields.Boolean(
+        related='company_id.overwrite_invoice_number',
+        readonly=False,
+        string='Overwrite Invoice Number',
+        help='If checked, the Odoo-generated invoice number will be replaced by the Online Invoice No. when posting customer invoices.',
+    )

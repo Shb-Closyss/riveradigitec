@@ -14,6 +14,22 @@ class SaleOrder(models.Model):
         copy=False,
         default=False,
     )
+    order_id = fields.Char(
+        string='Order ID',
+        copy=False,
+    )
+    online_invoice_no = fields.Char(
+        string='Online Invoice No.',
+        copy=False,
+    )
+
+    def _prepare_invoice(self):
+        invoice_vals = super()._prepare_invoice()
+        if self.order_id:
+            invoice_vals['order_id'] = self.order_id
+        if self.online_invoice_no:
+            invoice_vals['online_invoice_no'] = self.online_invoice_no
+        return invoice_vals
 
     def action_confirm(self):
         res = super().action_confirm()
