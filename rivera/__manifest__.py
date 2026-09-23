@@ -45,6 +45,8 @@ business processes, workflows, reports, and enhancements.
         'views/stock_picking_views.xml',
         'views/stock_warehouse_views.xml',
         'views/res_config_settings_views.xml',
+        'views/purchase_order_line_view.xml',
+        'views/stock_lot_views.xml',
     ],
 
     'assets': {},

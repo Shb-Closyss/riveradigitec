@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_line_tree_custom" model="ir.ui.view">
+        <field name="name">purchase.order.line.tree.custom</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <list string="PO Lines" create="false" default_order="id desc" editable="bottom">
+                <field name="order_id" string="Number" width="70px" widget="many2one_clickable" readonly="1"/>
+                <field name="partner_id" string="Vendor" readonly="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="product_qty" string="Ordered Qty" readonly="1"/>
+                <field name="qty_received" string="Received Qty" readonly="1"/>
+                <field name="date_approve" readonly="1"/>
+                <field name="date_planned" string="Scheduled Date" readonly="1"/>
+                <field name="state" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="purchase_order_line_search_custom" model="ir.ui.view">
+        <field name="name">purchase.order.line.search.custom</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Search PO Lines">
+                <field name="order_id"/>
+                <field name="product_id"/>
+                <field name="partner_id" string="Vendor"/>
+                <field name="state"/>
+                <separator/>
+                <group>
+                    <filter name="groupby_vendor" string="Vendor" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    <filter name="groupby_po" string="Purchase Order" domain="[]" context="{'group_by': 'order_id'}"/>
+                    <filter name="groupby_product" string="Product" domain="[]" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_purchase_order_line_all" model="ir.actions.act_window">
+        <field name="name">PO Lines</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="purchase_order_line_tree_custom"/>
+        <field name="search_view_id" ref="purchase_order_line_search_custom"/>
+        <field name="context">{'search_default_pending_lines': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No PO lines found.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_purchase_order_line_all" 
+              name="PO Lines" 
+              parent="purchase.menu_procurement_management" 
+              action="action_purchase_order_line_all" 
+              sequence="7"/>
+</odoo>
