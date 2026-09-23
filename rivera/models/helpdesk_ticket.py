@@ -55,6 +55,29 @@ class HelpdeskTicket(models.Model):
         string='Reported Issue',
         tracking=True,
     )
+    problem_report_date = fields.Date(
+        string='Problem Report Date',
+        tracking=True,
+    )
+    company_reply_date = fields.Date(
+        string='Replied from Company Date',
+        tracking=True,
+    )
+    claim_status = fields.Selection(
+        selection=[
+            ('approved', 'Approved'),
+            ('rejected', 'Rejected'),
+        ],
+        string='Claim Status',
+        tracking=True,
+    )
+    part_received_date = fields.Date(
+        string='Part Received Date',
+        tracking=True,
+    )
+    diagnosis = fields.Text(
+        string='Diagnosis',
+    )
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
